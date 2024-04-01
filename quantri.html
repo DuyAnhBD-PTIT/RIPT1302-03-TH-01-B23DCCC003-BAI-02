@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quản trị Sinh viên</title>
+<script>
+    var students = JSON.parse(localStorage.getItem('students')) || [
+        {STT: 1, name: "Nguyễn Văn A", age: 19, address: "Hà Nội", phone: "123456789", email: "nguyenvana@gmail.com", class: "RIPT1302" }
+    ];
+    function displayStudents() {
+        var table = document.getElementById("studentTable");
+        table.innerHTML = "<tr><th>STT</th><th>Tên</th><th>Tuổi</th><th>Địa chỉ</th><th>SĐT</th><th>Email</th><th>Lớp học</th><th>Chức năng</th></tr>";
+        for (var i = 0; i < students.length; i++) {
+            var student = students[i];
+            var row = table.insertRow(-1);
+            row.innerHTML = "<td>" + student.STT + "</td><td>" + student.name + "</td><td>" + student.age + "</td><td>" + student.address + "</td><td>" + student.phone + "</td><td>" + student.email + "</td><td>" + student.class + "</td><td><button onclick='editStudent(" + i + ")'>Sửa</button> <button onclick='deleteStudent(" + i + ")'>Xóa</button></td>";
+        }
+    }
+    function addStudent() {
+        var newName = prompt("Nhập tên sinh viên:");
+        var newAge = prompt("Nhập tuổi sinh viên:");
+        var newAddress = prompt("Nhập địa chỉ sinh viên:");
+        var newPhone = prompt("Nhập SĐT sinh viên:");
+        var newEmail = prompt("Nhập email sinh viên:");
+        var newClass = prompt("Nhập lớp học của sinh viên:");
+        students.push({ STT: students.length + 1, name: newName, age: newAge, address: newAddress, phone: newPhone, email: newEmail, class: newClass });
+        localStorage.setItem('students', JSON.stringify(students));
+        displayStudents();
+    }
+    function editStudent(index) {
+        var student = students[index];
+        var newName = prompt("Nhập tên mới cho sinh viên:", student.name);
+        var newAge = prompt("Nhập tuổi mới cho sinh viên:", student.age);
+        var newAddress = prompt("Nhập địa chỉ mới cho sinh viên:", student.address);
+        var newPhone = prompt("Nhập SĐT mới cho sinh viên:", student.phone);
+        var newEmail = prompt("Nhập email mới cho sinh viên:", student.email);
+        var newClass = prompt("Nhập lớp học mới của sinh viên:", student.class);
+        students[index] = { STT: student.STT, name: newName, age: newAge, address: newAddress, phone: newPhone, email: newEmail, class: newClass };
+        displayStudents();
+    }
+    function deleteStudent(index) {
+        if (confirm("Bạn có chắc chắn muốn xóa sinh viên này không?")) {
+            students.splice(index, 1);
+            displayStudents();
+        }
+    }
+    document.addEventListener("DOMContentLoaded", function(event) {
+        displayStudents();
+    });
+</script>
+<style>
+    body{
+        background-color: #e2e2e2;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: rgb(144, 200, 253);
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+
+    }
+    th {
+        background-color: rgb(144, 200, 253);
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    button{
+        margin: 0px;
+        width: 110px;
+        height: 30px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Quản trị Sinh viên</h1>
+<button onclick="addStudent()">Thêm Sinh viên</button>
+<table id="studentTable">
+    <tr>
+        <th>STT</th>
+        <th>Tên</th>
+        <th>Tuổi</th>
+        <th>Địa chỉ</th>
+        <th>SĐT</th>
+        <th>Email</th>
+        <th>Lớp học</th>
+        <th>Chức năng</th>
+    </tr>
+</table>
+</body>
+</html>
